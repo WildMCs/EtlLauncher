@@ -233,22 +233,22 @@ jobs:
           "- pnpm dependency install: **$duration seconds**" >> $env:GITHUB_STEP_SUMMARY
           "- pnpm cache hit: ${{ steps.pnpm-cache.outputs.cache-hit }}" >> $env:GITHUB_STEP_SUMMARY
 
-      - name: Generate Sakura app icons (including Windows .ico)
+      - name: Generate Tauri icons and verify the Windows icon
         if: github.event_name == 'workflow_dispatch' || steps.cache.outputs.cache-hit != 'true'
         working-directory: upstream
         shell: pwsh
         run: |
-          $iconPath = 'apps/app/icons/icon.ico'
-          $originalHash = if (Test-Path $iconPath) { (Get-FileHash $iconPath -Algorithm SHA256).Hash } else { '' }
+          $iconPath = 'apps/app/icons/eternal.ico'
           pnpm --filter @modrinth/app tauri icon "$env:GITHUB_WORKSPACE/branding/logo.png" --output "$env:GITHUB_WORKSPACE/upstream/apps/app/icons"
           if ($LASTEXITCODE -ne 0) { throw 'Tauri icon generation failed' }
           foreach ($requiredIcon in @($iconPath, 'apps/app/icons/128x128.png', 'apps/app/icons/128x128@2x.png')) {
             if (!(Test-Path $requiredIcon)) { throw "Icon generation failed: $requiredIcon missing" }
             if ((Get-Item $requiredIcon).Length -lt 500) { throw "Generated icon is unexpectedly small: $requiredIcon" }
           }
-          $generatedHash = (Get-FileHash $iconPath -Algorithm SHA256).Hash
-          if ($generatedHash -eq $originalHash) { throw 'Generated Windows icon is still identical to upstream Modrinth icon' }
-          Write-Host "Verified Sakura Windows icon generated: $generatedHash"
+          $expectedHash = (Get-FileHash "$env:GITHUB_WORKSPACE/branding/icons/EternalLauncher.ico" -Algorithm SHA256).Hash
+          $bundledHash = (Get-FileHash $iconPath -Algorithm SHA256).Hash
+          if ($bundledHash -cne $expectedHash) { throw 'The Windows icon differs from the EternalLauncher icon pack' }
+          Write-Host "Verified EternalLauncher Windows icon: $bundledHash"
 
       - name: Configure official Modrinth build environment
         if: github.event_name == 'workflow_dispatch' || steps.cache.outputs.cache-hit != 'true'

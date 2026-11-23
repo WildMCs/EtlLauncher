@@ -32,7 +32,6 @@ def configure_installer(data: dict, app: Path) -> None:
     data["bundle"]["licenseFile"] = "eternal-install-notice.txt"
     nsis = data["bundle"]["windows"]["nsis"]
     nsis["installerHooks"] = "nsis/eternal-notice.nsh"
-    nsis["installerIcon"] = "icons/icon.ico"
     nsis["languages"] = ["Spanish"]
 
 def configure_windows_tray(app: Path) -> None:

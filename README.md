@@ -139,11 +139,24 @@ Mensajes personalizados:
 - **Jugando a una instancia:** `Jugando: {nombre de la instancia}` y `¡De aventura! (ง •̀ω•́)ง`.
 - **Logo (tooltip):** `EternalLauncher 🌸`.
 
-Discord muestra el **nombre de aplicación** registrado en el Developer Portal: debe llamarse **EternalLauncher**. En [Discord Developer Portal](https://discord.com/developers/applications), abre tu aplicación y configura en **Rich Presence / Art Assets** el logo Sakura con la clave exacta `eternal_logo`. El recurso puede tardar en aparecer en Discord.
+Discord muestra el **nombre de aplicación** registrado en el Developer Portal: debe llamarse **EternalLauncher**. En **Rich Presence / Art Assets**, sube el [logo de 512 px](branding/icons/512.png) con la clave exacta `eternal_logo`. El recurso puede tardar en aparecer en Discord. [Discord Developer Portal](https://discord.com/developers/applications)
 
 No hace falta un bot, un token ni abrir puertos. La opción Discord Rich Presence sigue siendo configurable desde **Privacidad**, y necesitarás reiniciar el launcher tras cambiarla. Aún falta comprobar el resultado visual en una compilación real.
 
 ## Construir
+
+### Plantilla de iconos
+
+El [PNG maestro](public-news/IconApp/Modrith_rosita_fresita.png) conserva la resolución original y la transparencia. La carpeta [`branding/icons/`](branding/icons/) contiene PNG cuadrados de 16, 24, 32, 40, 48, 64, 96, 128, 256 y 512 px. El launcher y el instalador de Windows usan [`EternalLauncher.ico`](branding/icons/EternalLauncher.ico), que reúne los tamaños de 16 a 256 px.
+
+Para regenerar los archivos desde la raíz del repositorio, instala Pillow y ejecuta el generador. Cada tamaño se calcula desde el maestro y se guarda con compresión sin pérdida.
+
+```powershell
+python -m pip install Pillow
+python branding/generate_icons.py
+```
+
+El generador también acepta otro PNG como argumento y `--output` para exportar a una carpeta distinta. Para actualizar el logo del proyecto, guarda el nuevo maestro, regenera `branding/icons/` e incluye ambos cambios en la siguiente compilación.
 
 ### Instalar en Windows
 
@@ -172,7 +185,7 @@ Incluye `.github/workflows/build.yml`, `.gitignore`, `README.md`, `branding/`, `
 - `patches/brand_launcher.py`: marca interna Eternal, iconos, colores y promoción del perfil.
 - `patches/eternal_features.py`: Hosting en navegación, bienvenida editable y Discord Rich Presence.
 - `patches/privacy_launcher.py`: privacidad de la compilación.
-- `branding/logo.png.b64`: logo transparente para el compilador.
+- `branding/icons/` y `branding/generate_icons.py`: iconos listos para usar y generador de la plantilla.
 - `branding/theme.css`: tema Sakura Glass (CSS únicamente, sin motor de temas).
 - `branding/welcome.json`, `branding/welcome-sidebar.vue` y `branding/news-config.json`: bienvenida y noticias remotas.
 - `public-news/news.json` y `public-news/_headers`: archivos listos para publicar en Cloudflare Pages.

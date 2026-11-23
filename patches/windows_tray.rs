@@ -30,7 +30,7 @@ fn hide_to_tray(window: &Window) -> tauri::Result<()> {
         let menu = Menu::with_items(app, &[&open, &exit])?;
 
         TrayIconBuilder::with_id(TRAY_ID)
-            .icon(tauri::include_image!("icons/128x128.png"))
+            .icon(tauri::include_image!("icons/eternal-128.png"))
             .tooltip("EternalLauncher")
             .menu(&menu)
             .show_menu_on_left_click(false)
