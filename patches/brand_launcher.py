@@ -6,6 +6,8 @@ Runs after patches/patch_launcher.py. Fails closed when upstream UI layout chang
 from __future__ import annotations
 
 import base64
+import json
+import os
 import re
 import shutil
 from pathlib import Path
@@ -26,8 +28,12 @@ def replace_once(path: Path, original: str, updated: str) -> None:
 def install_release_notice() -> None:
     feature = FRONTEND / "features/eternal-updates"
     feature.mkdir(parents=True, exist_ok=True)
-    for filename in ("eternal-version.json", "release-check.ts", "release-notice.vue"):
+    for filename in ("eternal-version.json", "release-check.ts", "release-notice.vue", "about-launcher.vue"):
         shutil.copyfile(PROJECT / "branding" / filename, feature / filename)
+    (feature / "upstream-build.json").write_text(
+        json.dumps({"tag": os.environ.get("ETERNAL_UPSTREAM_TAG") or None}) + "\n",
+        encoding="utf-8",
+    )
 
     action_bar = FRONTEND / "app/shell/title-bar/action-bar.vue"
     replace_once(
@@ -183,6 +189,23 @@ def main() -> None:
     splash.write_text(new, encoding="utf-8")
 
     settings = FRONTEND / "features/settings/app-settings-modal/index.vue"
+    replace_once(settings, "\tGaugeIcon,\n", "\tGaugeIcon,\n\tInfoIcon,\n")
+    replace_once(
+        settings,
+        "import PrivacySettings from '@/features/settings/account/privacy-settings.vue'",
+        "import AboutLauncher from '@/features/eternal-updates/about-launcher.vue'\n"
+        "import PrivacySettings from '@/features/settings/account/privacy-settings.vue'",
+    )
+    replace_once(
+        settings,
+        "\t\tcontent: TroubleshootingSettings,\n\t},\n]",
+        "\t\tcontent: TroubleshootingSettings,\n\t},\n"
+        "\t{\n\t\tname: defineMessage({\n"
+        "\t\t\tid: 'eternal.settings.about-launcher',\n"
+        "\t\t\tdefaultMessage: 'Sobre el launcher',\n"
+        "\t\t}),\n\t\tcategory: tabCategories.system,\n"
+        "\t\ticon: InfoIcon,\n\t\tcontent: AboutLauncher,\n\t},\n]",
+    )
     replace_once(
         settings,
         "formatMessage(messages.appVersion, { version: appInfo.version })",

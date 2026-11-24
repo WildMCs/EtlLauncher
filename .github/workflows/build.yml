@@ -139,6 +139,8 @@ jobs:
       - name: Apply Sakura branding, logo and pink theme
         if: github.event_name == 'workflow_dispatch' || steps.cache.outputs.cache-hit != 'true'
         shell: pwsh
+        env:
+          ETERNAL_UPSTREAM_TAG: ${{ steps.upstream.outputs.tag }}
         run: python patches/brand_launcher.py
 
       - name: Remove Hosting, add Eternal welcome and configure Discord Rich Presence
