@@ -3,20 +3,26 @@
   "updated_at": "2026-11-22",
   "items": [
     {
+      "id": "Version 2.1.03",
+      "title": "Actualizacion 2.1.03",
+      "body": "Hemos renovado el estilo de interfaz en los botones y en las secciones de los mods para que siga el tema sakura.",
+      "date": "2026-11-24"
+    },
+    {
       "id": "Version 2.1.02",
       "title": "Actualizacion 2.1.02",
-      "body": "Se a implementado la revision de actualizaciones dentro de launcher, una galeria de wallpapers y se han solucionado errores de interfaz.",
-      "date": "2026-11-22"
+      "body": "Se ha implementado la revision de actualizaciones dentro de launcher, una galeria de wallpapers y se han solucionado errores de interfaz.",
+      "date": "2026-11-23"
     },
     {
       "id": "Version 11",
-      "title": "¡Version 1.1!",
+      "title": "Actualizacion 1.1",
       "body": "Hemos cambiado la interfaz de modrith por algo mas lindo con un toque de sakura <3",
       "date": "2026-11-22"
     },
     {
       "id": "bienvenida",
-      "title": "¡Version 1.0!",
+      "title": "Version inicial 1.0",
       "body": "Versión inicial del launcher. ¡Gracias por instalarlo y bienvenido a la experiencia EtlLauncher!",
       "date": "2026-11-22"
     },
