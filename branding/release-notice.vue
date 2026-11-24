@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExternalIcon } from '@modrinth/assets'
+import { HistoryIcon } from '@modrinth/assets'
 import { FloatingMenu, IconButton } from '@modrinth/ui'
 import { onMounted, shallowRef } from 'vue'
 
@@ -30,7 +30,11 @@ function openRelease(event: MouseEvent, url: string): void {
 			label="Nueva versión de EternalLauncher"
 			v-tooltip="'Nueva versión de EternalLauncher'"
 		>
-			<ExternalIcon class="size-4" aria-hidden="true" />
+			<span class="eternal-release-glyph" aria-hidden="true">
+				<HistoryIcon />
+				<span class="eternal-release-petal" />
+				<span class="eternal-release-alert">!</span>
+			</span>
 		</IconButton>
 		<template #popper>
 			<div class="max-w-64 p-3 text-sm">

@@ -1570,28 +1570,158 @@ body > .eternal-particles-layer .eternal-particle {
 
 /* === Eternal v4.4: targeted UI polish (only existing known components) === */
 
-/* Stop belongs to the red/danger family, not the generic Sakura-pink button.
- * A unique Vue class avoids recoloring Play, Delete or any other action.
- * Keyboard focus retains an explicit outline independent of box-shadow.
- */
-:root .app-contents .app-viewport [data-button].button-frame--colored.eternal-stop-action {
-  background: linear-gradient(180deg, #f85576 0%, #e83a61 100%) !important;
-  border: 1px solid #b72d4b !important;
-  color: #2a0b14 !important;
-  box-shadow: inset 0 1px 0 rgba(255, 214, 227, .21),
-              0 0 0 1px rgba(112, 25, 44, .28),
-              0 4px 11px rgba(142, 31, 57, .20) !important;
+:root .app-contents .app-viewport [data-button]:is(.button-frame--colored, .button-frame--base):is(.eternal-play-action, :has(> .eternal-play-glyph, > .eternal-stop-glyph)) {
+  --eternal-game-action-bg: #f4acc7;
+  --eternal-game-action-hover: #ffc6db;
+  background: var(--eternal-game-action-bg) !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: #1c1219 !important;
+  box-shadow: none !important;
 }
-:root .app-contents .app-viewport [data-button].button-frame--colored.eternal-stop-action:hover:not(:disabled) {
-  background: linear-gradient(180deg, #ef4569 0%, #d82c54 100%) !important;
-  border-color: #9e213f !important;
+.app-contents .app-viewport [data-button]:has(> .eternal-stop-glyph) {
+  --eternal-game-action-bg: #f47c94;
+  --eternal-game-action-hover: #ff9aac;
 }
-:root .app-contents .app-viewport [data-button].button-frame--colored.eternal-stop-action::before {
-  background: linear-gradient(180deg, rgba(255, 228, 239, .15), transparent 75%) !important;
+:root .app-contents .app-viewport [data-button]:is(.button-frame--colored, .button-frame--base):is(.eternal-play-action, :has(> .eternal-play-glyph, > .eternal-stop-glyph)):hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--eternal-game-action-hover) !important;
 }
-:root .app-contents .app-viewport [data-button].button-frame--colored.eternal-stop-action:focus-visible {
+:root .app-contents .app-viewport [data-button]:is(.button-frame--colored, .button-frame--base):is(.eternal-play-action, :has(> .eternal-play-glyph, > .eternal-stop-glyph))::before {
+  background: none !important;
+  box-shadow: none !important;
+}
+:root .app-contents .app-viewport [data-button]:is(.button-frame--colored, .button-frame--base):is(.eternal-play-action, :has(> .eternal-play-glyph, > .eternal-stop-glyph)):focus-visible {
   outline: 2px solid #ffbfd1 !important;
   outline-offset: 2px;
+}
+:root .app-contents .app-viewport [data-button]:is(.button-frame--colored, .button-frame--base):is(.eternal-play-action, :has(> .eternal-play-glyph, > .eternal-stop-glyph)):not([class*="rounded-full"]) {
+  min-height: 42px;
+  min-width: 102px;
+  padding-inline: 16px !important;
+}
+.app-contents .app-viewport [data-button][class*="rounded-full"]:has(> .eternal-play-glyph, > .eternal-stop-glyph) {
+  min-width: 38px;
+  min-height: 38px;
+}
+.app-contents .app-viewport .button-group:has(> [data-button] > .eternal-play-glyph) > [data-button]:first-child {
+  border-start-end-radius: 0 !important;
+  border-end-end-radius: 0 !important;
+}
+.app-contents .app-viewport .button-group:has(> [data-button] > .eternal-play-glyph) > [data-button]:last-child {
+  background: #f4acc7 !important;
+  color: #1c1219 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-start-start-radius: 0 !important;
+  border-end-start-radius: 0 !important;
+}
+.app-contents .app-viewport [data-button]:is(.eternal-play-action, :has(> .eternal-play-glyph, > .eternal-stop-glyph)) > svg {
+  color: #191218 !important;
+}
+.eternal-play-glyph polygon {
+  fill: currentColor;
+}
+.eternal-home-glyph {
+  color: #f6b7d1 !important;
+}
+.light-mode .eternal-home-glyph {
+  color: #a1436e !important;
+}
+.eternal-instance-status {
+  border-radius: 999px !important;
+  padding-inline: 14px;
+}
+
+.eternal-release-glyph {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 25px;
+  height: 24px;
+  color: #f685b1;
+}
+.eternal-release-glyph > svg {
+  width: 22px;
+  height: 22px;
+  margin-right: 3px;
+}
+.eternal-release-petal {
+  position: absolute;
+  top: 5px;
+  left: 13px;
+  width: 5px;
+  height: 7px;
+  border-radius: 80% 15% 75% 25%;
+  background: #ffc1da;
+  transform: rotate(24deg);
+}
+.eternal-release-alert {
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+  color: #ff3459;
+  font: 900 19px/1 system-ui, sans-serif;
+}
+.light-mode .eternal-release-glyph {
+  color: #ae416f;
+}
+.light-mode .eternal-release-alert {
+  color: #ce163e;
+}
+
+/* Blur each content surface once to keep virtualized rows inexpensive. */
+:root {
+  --eternal-content-glass: rgba(56, 30, 48, .48);
+  --eternal-content-solid: #382534;
+  --eternal-content-header: rgba(102, 58, 79, .38);
+  --eternal-content-line: rgba(236, 169, 196, .22);
+  --eternal-content-selected: rgba(230, 133, 177, .24);
+}
+:root.light-mode {
+  --eternal-content-glass: rgba(255, 231, 242, .78);
+  --eternal-content-solid: #f9e6ef;
+  --eternal-content-header: rgba(240, 185, 214, .44);
+  --eternal-content-line: rgba(132, 61, 94, .24);
+  --eternal-content-selected: rgba(170, 73, 117, .20);
+}
+.eternal-content-toolbar,
+.eternal-content-table {
+  background: var(--eternal-content-glass) !important;
+  border: 1px solid var(--eternal-content-line) !important;
+  border-radius: 14px;
+}
+.eternal-content-toolbar {
+  padding: 6px 8px;
+}
+.eternal-content-toolbar [aria-pressed="true"] {
+  background: var(--eternal-content-selected) !important;
+}
+.eternal-content-table-header,
+.eternal-content-table-header::before {
+  background: var(--eternal-content-header) !important;
+  border-color: var(--eternal-content-line) !important;
+}
+.eternal-content-table [data-content-card-item] {
+  background: transparent !important;
+  border-color: var(--eternal-content-line) !important;
+}
+.eternal-content-table [data-content-card-item]:is(:hover, .bg-surface-2\.5) {
+  background: var(--eternal-content-selected) !important;
+}
+@media (prefers-reduced-transparency: no-preference) {
+  :root:not(:has(.app-grid-layout.disable-advanced-rendering)) :is(.eternal-content-toolbar, .eternal-content-table) {
+    -webkit-backdrop-filter: blur(18px) saturate(118%);
+    backdrop-filter: blur(18px) saturate(118%);
+  }
+}
+:root:has(.app-grid-layout.disable-advanced-rendering) :is(.eternal-content-toolbar, .eternal-content-table) {
+  background: var(--eternal-content-solid) !important;
+}
+@media (prefers-reduced-transparency: reduce) {
+  .eternal-content-toolbar,
+  .eternal-content-table {
+    background: var(--eternal-content-solid) !important;
+  }
 }
 
 /* Focus/selection highlights inside the skin tiles cannot be clipped by the
