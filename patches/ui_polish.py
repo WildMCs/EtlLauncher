@@ -101,11 +101,74 @@ def mark_content_glass() -> None:
         'class="sticky top-0 z-10 grid grid-cols-[var(--content-columns)]',
         'class="eternal-content-table-header sticky top-0 z-10 grid grid-cols-[var(--content-columns)]',
     )
+    browse = content.parent / "browse-tab/layout.vue"
+    replace_once(
+        browse,
+        'v-if="ctx.showProjectTypeTabs.value"',
+        'v-if="ctx.showProjectTypeTabs.value"\n\t\tclass="eternal-browse-tabs"',
+    )
+    replace_once(
+        browse,
+        'wrapper-class="w-full"\n\t\tsize="large"',
+        'wrapper-class="eternal-browse-search w-full"\n\t\tsize="large"',
+    )
+    replace_once(
+        browse,
+        '<div class="flex flex-wrap items-center gap-2">\n\t\t<Combobox',
+        '<div class="eternal-browse-toolbar flex flex-wrap items-center gap-2">\n\t\t<Combobox',
+    )
+    replace_once(
+        browse,
+        '<ProjectCardList v-else :layout="ctx.effectiveLayout.value">',
+        '<ProjectCardList v-else class="eternal-browse-results" :layout="ctx.effectiveLayout.value">',
+    )
+
+
+def remove_ad_report() -> None:
+    path = FRONTEND / "features/settings/system/troubleshooting-settings.vue"
+    source = path.read_text(encoding="utf-8")
+    for before, after in (
+        ("\tCheckIcon,\n", ""),
+        ("\tCopyIcon,\n", ""),
+        ("\tLoaderCircleIcon,\n", ""),
+        ("\tinjectPageContext,\n", ""),
+        ("\tIntlFormatted,\n", ""),
+        ("import { openUrl } from '@tauri-apps/plugin-opener'\n", ""),
+        ("import { get_ads_debug_state } from '@/helpers/ads.js'\n", ""),
+        ("import { useCopyAsPaste } from '@/shared/composables/use-copy-as-paste'\n", ""),
+        ("const { addNotification, handleError }", "const { handleError }"),
+        ("const { adConsentAvailable } = injectPageContext()\n", ""),
+        ("const copyAsPaste = useCopyAsPaste()\n", ""),
+        ("const copyingAdDetails = ref(false)\nconst copiedAdDetails = ref(false)\n", ""),
+    ):
+        if source.count(before) != 1:
+            raise RuntimeError(f"Eternal UI polish: missing ad-report marker {before!r}")
+        source = source.replace(before, after, 1)
+    for start, end in (
+        ("\treportAdTitle: {", "\tappCacheTitle: {"),
+        ("\nfunction openSupport() {", "</script>"),
+        (
+            '\t\t<div class="flex flex-col gap-2.5">\n'
+            '\t\t\t<h2 class="m-0 text-lg font-semibold text-contrast">\n'
+            "\t\t\t\t{{ formatMessage(messages.reportAdTitle) }}",
+            '\t\t<div class="flex items-center justify-between gap-4">',
+        ),
+    ):
+        begin = source.index(start)
+        finish = source.index(end, begin + len(start))
+        source = source[:begin] + source[finish:]
+    path.write_text(source, encoding="utf-8")
 
 
 def main() -> None:
     style_game_actions()
     mark_content_glass()
+    remove_ad_report()
+    replace_once(
+        FRONTEND / "components/ui/library/library-toolbar/index.vue",
+        '<Button type="colored" color="brand" @click="showCreationModal?.()">',
+        '<Button class="eternal-play-action" type="colored" color="brand" @click="showCreationModal?.()">',
+    )
 
     # The add-skin tile's focus outline protrudes outside the virtual grid.
     # A named class lets CSS render the highlight INSIDE the tile instead.

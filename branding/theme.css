@@ -1428,14 +1428,12 @@ section[data-tauri-drag-region-exclude].fixed.top-0.right-0
  * The ProjectCard uses .project-card-container > .bg-surface-3.
  */
 :root.sakura-mode .eternal-browse-page .project-card-container > .bg-surface-3 {
-  background:
-    linear-gradient(155deg, rgba(255,255,255,.035), transparent 75%),
-    rgba(47, 27, 51, .86) !important;
-  border-color: rgba(242, 183, 216, .17) !important;
+  background: var(--eternal-content-glass) !important;
+  border-color: var(--eternal-content-line) !important;
 }
 :root.sakura-mode .eternal-browse-page .project-card-container:hover > .bg-surface-3 {
-  background: rgba(59, 35, 63, .91) !important;
-  border-color: rgba(242, 183, 216, .28) !important;
+  background: var(--eternal-content-hover) !important;
+  border-color: var(--eternal-content-line) !important;
 }
 :root.oled-mode .eternal-browse-page .project-card-container > .bg-surface-3 {
   background: rgba(10,10,14,.95) !important;
@@ -1671,14 +1669,16 @@ body > .eternal-particles-layer .eternal-particle {
 
 /* Blur each content surface once to keep virtualized rows inexpensive. */
 :root {
-  --eternal-content-glass: rgba(56, 30, 48, .48);
+  --eternal-content-glass: rgba(56, 30, 48, .40);
+  --eternal-content-hover: rgba(85, 43, 68, .53);
   --eternal-content-solid: #382534;
   --eternal-content-header: rgba(102, 58, 79, .38);
   --eternal-content-line: rgba(236, 169, 196, .22);
   --eternal-content-selected: rgba(230, 133, 177, .24);
 }
 :root.light-mode {
-  --eternal-content-glass: rgba(255, 231, 242, .78);
+  --eternal-content-glass: rgba(255, 231, 242, .70);
+  --eternal-content-hover: rgba(250, 211, 232, .82);
   --eternal-content-solid: #f9e6ef;
   --eternal-content-header: rgba(240, 185, 214, .44);
   --eternal-content-line: rgba(132, 61, 94, .24);
@@ -1708,18 +1708,36 @@ body > .eternal-particles-layer .eternal-particle {
 .eternal-content-table [data-content-card-item]:is(:hover, .bg-surface-2\.5) {
   background: var(--eternal-content-selected) !important;
 }
+:root.sakura-mode .eternal-browse-page :is(.eternal-browse-tabs, .eternal-browse-search, .eternal-browse-toolbar) {
+  background: var(--eternal-content-glass) !important;
+  border: 1px solid var(--eternal-content-line) !important;
+  border-radius: 16px;
+}
+:root.sakura-mode .eternal-browse-page .eternal-browse-toolbar {
+  padding: 6px 8px;
+}
+:root.sakura-mode .eternal-browse-page .eternal-browse-toolbar [data-button].button-frame--base {
+  background: var(--eternal-content-selected) !important;
+}
 @media (prefers-reduced-transparency: no-preference) {
-  :root:not(:has(.app-grid-layout.disable-advanced-rendering)) :is(.eternal-content-toolbar, .eternal-content-table) {
-    -webkit-backdrop-filter: blur(18px) saturate(118%);
-    backdrop-filter: blur(18px) saturate(118%);
+  :root:not(:has(.app-grid-layout.disable-advanced-rendering)) :is(.eternal-content-toolbar, .eternal-content-table),
+  :root.sakura-mode:not(:has(.app-grid-layout.disable-advanced-rendering)) .eternal-browse-page
+  :is(.eternal-browse-tabs, .eternal-browse-search, .eternal-browse-toolbar, .eternal-browse-results) {
+    -webkit-backdrop-filter: blur(22px) saturate(118%);
+    backdrop-filter: blur(22px) saturate(118%);
   }
 }
 :root:has(.app-grid-layout.disable-advanced-rendering) :is(.eternal-content-toolbar, .eternal-content-table) {
   background: var(--eternal-content-solid) !important;
 }
+:root.sakura-mode:has(.app-grid-layout.disable-advanced-rendering) .eternal-browse-page
+  :is(.eternal-browse-tabs, .eternal-browse-search, .eternal-browse-toolbar, .project-card-container > .bg-surface-3) {
+  background: var(--eternal-content-solid) !important;
+}
 @media (prefers-reduced-transparency: reduce) {
-  .eternal-content-toolbar,
-  .eternal-content-table {
+  :is(.eternal-content-toolbar, .eternal-content-table),
+  :root.sakura-mode .eternal-browse-page
+    :is(.eternal-browse-tabs, .eternal-browse-search, .eternal-browse-toolbar, .project-card-container > .bg-surface-3) {
     background: var(--eternal-content-solid) !important;
   }
 }
