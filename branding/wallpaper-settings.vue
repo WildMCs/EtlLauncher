@@ -84,7 +84,7 @@ function selectImages(event: Event) {
 	const files = Array.from(element.files ?? [])
 	element.value = ''
 	if (!files.length) return
-	void runWallpaperAction(() => addEternalWallpapers(files), 'Im?genes guardadas en tu galer?a.')
+	void runWallpaperAction(() => addEternalWallpapers(files), 'Imágenes guardadas en tu galería.')
 }
 
 function updateEffects() {
@@ -129,11 +129,11 @@ function updateSidebarTransparency() {
 				accept="image/jpeg,image/png,image/webp,image/gif"
 				multiple
 				class="eternal-wallpaper-file"
-				aria-label="Seleccionar im?genes de fondo"
+				aria-label="Seleccionar imágenes de fondo"
 				@change="selectImages"
 			/>
 			<button type="button" class="eternal-wallpaper-primary" :disabled="busy" @click="input?.click()">
-				{{ busy ? 'Procesando?' : 'Agregar im?genes o GIF' }}
+				{{ busy ? 'Procesando…' : 'Agregar imágenes o GIF' }}
 			</button>
 			<ul v-if="gallery.items.length" class="eternal-wallpaper-gallery" aria-label="Fondos guardados">
 				<li v-for="item in gallery.items" :key="item.id">
@@ -150,7 +150,7 @@ function updateSidebarTransparency() {
 		</div>
 		<div v-else-if="wallpaperChoice === 'windows'" class="eternal-wallpaper-actions">
 			<button type="button" class="eternal-wallpaper-secondary" :disabled="busy" @click="runWallpaperAction(refreshWindowsWallpaper)">
-				{{ busy ? 'Leyendo el escritorio?' : 'Actualizar desde Windows' }}
+				{{ busy ? 'Leyendo el escritorio…' : 'Actualizar desde Windows' }}
 			</button>
 		</div>
 		<div class="eternal-wallpaper-effects">
