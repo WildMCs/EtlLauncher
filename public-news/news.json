@@ -3,7 +3,13 @@
   "updated_at": "2026-11-22",
   "items": [
     {
-      "id": "bienvenida",
+      "id": "Version 2.1.02",
+      "title": "Actualizacion 2.1.02",
+      "body": "Se a implementado la revision de actualizaciones dentro de launcher, una galeria de wallpapers y se han solucionado errores de interfaz.",
+      "date": "2026-11-22"
+    },
+    {
+      "id": "Version 11",
       "title": "¡Version 1.1!",
       "body": "Hemos cambiado la interfaz de modrith por algo mas lindo con un toque de sakura <3",
       "date": "2026-11-22"
